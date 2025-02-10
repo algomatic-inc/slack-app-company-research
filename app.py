@@ -1,6 +1,7 @@
 import os
 import random
 import re
+import sys
 import time
 
 from bs4 import BeautifulSoup
@@ -14,6 +15,9 @@ from slack_bolt.adapter.aws_lambda.lambda_s3_oauth_flow import LambdaS3OAuthFlow
 from chalicelib.research_company import research_company
 from chalicelib.libs.slack_api.ui.modal.create_modal import open_modal
 from chalicelib.libs.notion_api.create_page import add_page_to_notion_database
+
+logger.remove()
+logger.add(sys.stdout, level=os.getenv("LOG_LEVEL", "INFO"))
 
 bolt_app = App(
     process_before_response=True,
@@ -38,7 +42,7 @@ def acknowledge_anyway(ack):
 
 
 def handle_email_message(event, say):
-    logger.info(f"{event=}")
+    logger.debug(f"{event=}")
     thread_ts = event.get("ts")
     channel = event.get("channel")
     files = event.get("files", [])
@@ -49,8 +53,9 @@ def handle_email_message(event, say):
             continue
         preview = file.get("preview", "")
         soup = BeautifulSoup(preview, "html.parser")
-        text = "\n".join(soup.get_text(separator="\n", strip=True).split())
-        if m := re.search("会社名\s+?(.*?)\s+?(部署|企業URL|部門)", text):
+        text = " ".join(soup.get_text(separator="\n", strip=True).split())
+        pattern = re.compile(r"会社名\s+?(.*?)\s+?(部署|企業URL|部門)", re.DOTALL)
+        if m := pattern.search(text):
             company_name = m.group(1).strip()
             slack_url = file.get("permalink", "")
             timestamp = file.get("timestamp", "")
@@ -60,7 +65,7 @@ def handle_email_message(event, say):
             contents = []
             for (response_content, citations) in research_company(company_name):
                 pattern = re.compile(r"<think>.*?</think>", re.DOTALL)
-                content = pattern.sub("", response_content).strip()
+                content = pattern.sub(u"", response_content).strip()
                 content = content.replace("```markdown", "").replace("```", "").replace("---", "")
                 contents.append(content + "\n")
                 for idx, citation in enumerate(citations, start=1):
