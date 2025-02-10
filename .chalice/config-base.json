@@ -1,0 +1,32 @@
+{
+  "version": "2.0",
+  "app_name": "recruta-gtm-dev-company-research",
+  "stages": {
+    "dev": {
+      "api_gateway_stage": "api",
+      "environment_variables": {
+        "SLACK_BOT_APP_ID": "",
+        "SLACK_BOT_TOKEN": "xoxb-***",
+        "SLACK_SIGNING_SECRET": "",
+        "SLACK_CLIENT_ID": "",
+        "SLACK_CLIENT_SECRET": "",
+        "SLACK_REDIRECT_URI": "https://***.execute-api.ap-northeast-1.amazonaws.com/api/slack/oauth_redirect",
+        "SLACK_INSTALL_PATH": "https://***.execute-api.ap-northeast-1.amazonaws.com/api/slack/install",
+        "SLACK_SCOPES": "app_mentions:read,channels:history,chat:write,commands,users:read",
+        "SLACK_INSTALLATION_S3_BUCKET_NAME": "***",
+        "SLACK_STATE_S3_BUCKET_NAME": "***",
+        "SLACK_WORKFLOW_CHANNEL_ID": "***",
+        "OPENAI_API_KEY": "sk-proj-***",
+        "PERPLEXITY_API_KEY": "pplx-***",
+        "NOTION_API_KEY": "ntn_***",
+        "NOTION_DATABASE_ID": "***"
+      },
+      "autogen_policy": false,
+      "automatic_layer": true
+    }
+  },
+  "lambda_timeout" : 300,
+  "exclude": [
+    ".env",
+  ]
+}
