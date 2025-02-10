@@ -1,0 +1,20 @@
+[project]
+name = "aws-chalice"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "beautifulsoup4>=4.13.3",
+    "boto3>=1.23.10",
+    "chalice>=1.31.2",
+    "click>=8.0.4",
+    "jinja2>=3.0.3",
+    "loguru>=0.7.3",
+    "notion-client>=2.3.0",
+    "openai>=1.58.0",
+    "pydantic>=1.7.4",
+    "python-dotenv>=0.20.0",
+    "requests>=2.27.1",
+    "slack-sdk>=3.34.0",
+]
